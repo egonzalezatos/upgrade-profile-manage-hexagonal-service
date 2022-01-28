@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using api.DTOs;
+using Application.DTOs;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
@@ -11,12 +11,12 @@ using Xunit.Abstractions;
 
 namespace test
 {
-    public class LevelServiceTest : IClassFixture<WebApplicationFactory<api.Startup>>
+    public class LevelServiceTest : IClassFixture<WebApplicationFactory<Infrastructure.Startup>>
     {
         private readonly HttpClient _client;
         private readonly ITestOutputHelper _output;
 
-        public LevelServiceTest(WebApplicationFactory<api.Startup> fixture, ITestOutputHelper output)
+        public LevelServiceTest(WebApplicationFactory<Infrastructure.Startup> fixture, ITestOutputHelper output)
         {
             _client = fixture.CreateClient();
             _output = output;
@@ -28,8 +28,8 @@ namespace test
         {
             //Start
             var response = await _client.GetAsync("api/Level");
-            List<LevelDto> Deserializer(string o) 
-                => JsonConvert.DeserializeObject<List<LevelDto>>(o);
+            List<Level> Deserializer(string o) 
+                => JsonConvert.DeserializeObject<List<Level>>(o);
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             
             //Arrange

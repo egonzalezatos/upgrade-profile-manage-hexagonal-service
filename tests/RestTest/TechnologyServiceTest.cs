@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using api.DTOs;
+using Application.DTOs;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
@@ -11,12 +11,12 @@ using Xunit.Abstractions;
 
 namespace test
 {
-    public class TechnologyServiceTest
+    public class TechnologyServiceTest : IClassFixture<WebApplicationFactory<Infrastructure.Startup>>
     {
         private readonly HttpClient _client;
         private readonly ITestOutputHelper _output;
 
-        public TechnologyServiceTest(ITestOutputHelper output, WebApplicationFactory<api.Startup> fixture)
+        public TechnologyServiceTest(ITestOutputHelper output, WebApplicationFactory<Infrastructure.Startup> fixture)
         {
             _output = output;
             _client = fixture.CreateClient();
@@ -27,8 +27,8 @@ namespace test
         {
             //Start
             var response = await _client.GetAsync("api/Technology");
-            List<TechnologyDto> Deserializer(string o) 
-                => JsonConvert.DeserializeObject<List<TechnologyDto>>(o);
+            List<Technology> Deserializer(string o) 
+                => JsonConvert.DeserializeObject<List<Technology>>(o);
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             
             //Arrange

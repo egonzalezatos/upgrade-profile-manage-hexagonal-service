@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using api.DTOs;
+using Application.DTOs;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
@@ -11,12 +11,12 @@ using Xunit.Abstractions;
 
 namespace test
 {
-    public class PositionServiceTest : IClassFixture<WebApplicationFactory<api.Startup>>
+    public class PositionServiceTest : IClassFixture<WebApplicationFactory<Infrastructure.Startup>>
     {
         private readonly HttpClient _client;
         private readonly ITestOutputHelper _output;
 
-        public PositionServiceTest(WebApplicationFactory<api.Startup> fixture, ITestOutputHelper output)
+        public PositionServiceTest(WebApplicationFactory<Infrastructure.Startup> fixture, ITestOutputHelper output)
         {
             _output = output;
             _client = fixture.CreateClient();
@@ -50,8 +50,8 @@ namespace test
         {
             //Start
             var response = await _client.GetAsync("api/Position");
-            List<JobPositionDto> Deserializer(string o) 
-                => JsonConvert.DeserializeObject<List<JobPositionDto>>(o);
+            List<Position> Deserializer(string o) 
+                => JsonConvert.DeserializeObject<List<Position>>(o);
             response.StatusCode.Should().Be(HttpStatusCode.OK);
                 
             //Arrange
