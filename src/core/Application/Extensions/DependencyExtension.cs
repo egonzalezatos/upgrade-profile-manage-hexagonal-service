@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions
 {
-    public static class ServiceDiExtension
+    public static class DependencyExtension
     {
         public static void AddApplication(this IServiceCollection services)
         {
