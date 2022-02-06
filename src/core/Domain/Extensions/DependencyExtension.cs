@@ -9,18 +9,22 @@ namespace Domain.Extensions
 {
     public static class DependencyExtension
     {
-        public static void AddDomain(this IServiceCollection services, string connectionString)
+        public static void AddDomain(this IServiceCollection services, string connectionString, string assemblyName)
         {
-            AddContext(services, connectionString);
+            AddContext(services, connectionString, assemblyName);
             AddRepositories(services);
         }
 
-        public static void AddContext(this IServiceCollection services, string connectionString)
+        public static void AddContext(this IServiceCollection services, string connectionString, string assemblyName)
         {
             //DB Config
             Console.WriteLine(connectionString);
             services.AddDbContext<EntityContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString, b =>
+                {
+                    b.MigrationsAssembly(assemblyName);
+                    b.EnableRetryOnFailure();
+                }));
         }
         public static void AddRepositories(this IServiceCollection services)
         {

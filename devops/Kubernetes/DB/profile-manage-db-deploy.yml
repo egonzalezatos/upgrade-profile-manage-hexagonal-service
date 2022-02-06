@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: profile-manage-db-depl
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: profile-manage-db
+  template:
+    metadata:
+      labels:
+        app: profile-manage-db
+    spec:
+      containers:
+        - name: profile-manage-db-container
+          image: mcr.microsoft.com/mssql/server:2019-CU14-ubuntu-20.04
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: profile-manage-db-secret
+                  key: password
+          volumeMounts:
+            - mountPath: /var/opt/mssql
+              name: profile-manage-db-pv
+      volumes:
+        - name: profile-manage-db-pv
+          persistentVolumeClaim:
+            claimName: profile-manage-db-pvc
+              
+--- 
+#Cluster Ip
+apiVersion: v1
+kind: Service
+metadata:
+  name: profile-manage-db-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: profile-manage-db
+  ports:
+    - name: profile-manage-db
+      port: 1433
+      targetPort: 1433
+      protocol: TCP
+
+--- 
+#Node Port
+apiVersion: v1
+kind: Service
+metadata:
+  name: profile-manage-db-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: profile-manage-db
+  ports:
+    - name: profile-manage-db
+      port: 1433
+      targetPort: 1433
+      protocol: TCP

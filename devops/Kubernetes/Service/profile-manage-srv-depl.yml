@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: profile-manage-srv-depl
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: profile-manage-srv
+  template:
+    metadata:
+      labels:
+        app: profile-manage-srv
+    spec:
+      containers:
+        - name: profile-manage-container
+          image: egonzalezatos/profile-manage:v2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: profile-manage-db-secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: profile-manage-db-secret
+            - name: DB_SERVER
+              value: profile-manage-srv-ip
+            - name: GRPC_PORT
+              value: "666"
+
+---
+#Cluster IP
+apiVersion: v1
+kind: Service
+metadata:
+  name: profile-manage-srv-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: profile-manage-srv
+  ports:
+    - name: profile-manage-srv
+      port: 6001
+      protocol: TCP
+      
+--- 
+#Node Port
+apiVersion: v1
+kind: Service
+metadata:
+  name: profile-manage-srv-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: profile-manage-srv
+  ports:
+    - name: profile-manage-srv
+      port: 6001
+      targetPort: 80
+
+    

@@ -1,9 +1,12 @@
+using System.Text;
 using Api.Extensions;
 using Application.Extensions;
 using Domain.Extensions;
+using Domain.Models;
 using gRPC.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,13 +28,23 @@ namespace Infrastructure
         public void ConfigureServices(IServiceCollection services)
         {
             //Enable Core (App/Domain)
-            services.AddDomain(Configuration.GetConnectionString("DBConnection"));
+            string connectionString = new StringBuilder()
+                .Append($"Server={Configuration["DB_SERVER"]},{Configuration["DB_PORT"]};")
+                .Append($"User Id={Configuration["DB_USERNAME"]};")
+                .Append($"Password={Configuration["DB_PASSWORD"]};")
+                .Append($"Database={Configuration["DB_Database"]};")
+                .ToString();
+            services.AddDomain(
+                connectionString, 
+                typeof(Program).Assembly.GetName().Name); //Assembly: Infrastructure
+            
             services.AddApplication();           
  
             //Enable API Restful
             services.AddApi();
             
             //Enable GRPC
+            Configuration["Kestrel:Endpoints:Grpc:Url"] = $"http://+:{Configuration["GRPC_PORT"]}";
             services.AddgRPC();
             
             services.AddSwaggerGen(c =>
@@ -43,6 +56,12 @@ namespace Infrastructure
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Run migrations
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                scope.ServiceProvider.GetService<EntityContext>().MigrateDb();
+            }
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
