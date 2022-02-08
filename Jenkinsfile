@@ -1,25 +1,13 @@
 pipeline {
-    agent any
-    
+    agent any 
     stages {
-        stage('Build') {
+        stage('Stage 1') {
             steps {
-                echo 'building...'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'building...'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'building...'
+                echo 'Hello world!' 
             }
         }
     }
 }
-
 
 // node {
 //     def namespace=      "profile-manage"
