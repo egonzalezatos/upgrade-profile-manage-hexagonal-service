@@ -19,6 +19,11 @@ pipeline {
                 bat "docker build -t ${image} . -f ./devops/Docker/Dockerfile"
             }
         }
+        stage('Push') {
+            steps {
+                bat "docker push ${image}"
+            }
+        }
     }
 }
 
