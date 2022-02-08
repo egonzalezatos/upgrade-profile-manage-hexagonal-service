@@ -3,7 +3,7 @@ def appName=        "profile-manage-service"
 def deploy=         "profile-manage-srv-depl"
 def image=          "egonzalezatos/profile-manage:v2"
 def environment=    "prod"
-def k8s_path=       "./devops/Kubernetes/Service"
+def k8s_path=       "./devops/Kubernetes"
 
 pipeline {
 
@@ -28,8 +28,8 @@ pipeline {
             steps {
                 bat "kubectl get ns ${namespace} || kubectl create ns ${namespace}"   
                 bat "kubectl --namespace=${namespace} delete deploy ${deploy} || (exit 0)" 
-                bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/profile-manage-db-depl.yml"   
-                bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/profile-manage-srv-depl.yml"   
+                bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/DB/profile-manage-db-depl.yml"   
+                bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/Service/profile-manage-srv-depl.yml"   
             }
         }
     }
