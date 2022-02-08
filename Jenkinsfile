@@ -15,6 +15,7 @@ pipeline {
             }
         }
         stage('Build') {
+            agent {label 'linux'}
             steps {
                 sh('docker build -t ${image} . -f ./devops/Docker/Dockerfile')
             }
