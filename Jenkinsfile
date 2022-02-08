@@ -9,9 +9,9 @@ pipeline {
 
     agent any 
     stages {
-        stage('Stage 1') {
+        stage('Build') {
             steps {
-                echo 'Hello world!' 
+                sh('docker build -t ${image} . -f ./devops/Docker/Dockerfile')
             }
         }
     }
