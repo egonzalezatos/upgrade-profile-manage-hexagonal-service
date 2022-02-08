@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat('docker build -t ${image} . -f ./devops/Docker/Dockerfile')
+                bat 'docker build -t ${image} . -f ./devops/Docker/Dockerfile'
             }
         }
     }
