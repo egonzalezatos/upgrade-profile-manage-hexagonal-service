@@ -1,10 +1,12 @@
+def namespace=      "profile-manage"
+def appName=        "profile-manage-service"
+def deploy=         "profile-manage-srv-depl"
+def image=          "egonzalezatos/profile-manage:v2"
+def environment=    "prod"
+def k8s_path=       "./devops/Kubernetes/Service"
+
 pipeline {
-    def namespace=      "profile-manage"
-    def appName=        "profile-manage-service"
-    def deploy=         "profile-manage-srv-depl"
-    def image=          "egonzalezatos/profile-manage:v2"
-    def environment=    "prod"
-    def k8s_path=       "./devops/Kubernetes/Service"
+
     agent any 
     stages {
         stage('Stage 1') {
