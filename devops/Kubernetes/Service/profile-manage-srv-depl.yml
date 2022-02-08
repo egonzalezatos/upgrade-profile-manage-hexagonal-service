@@ -49,7 +49,7 @@ spec:
   ports:
     - name: profile-manage-srv
       port: 80
-      targetPort: 6001
+      targetPort: 80
       protocol: TCP
       
 --- 
@@ -64,6 +64,7 @@ spec:
     app: profile-manage-srv
   ports:
     - name: profile-manage-srv
-      port: 6001
+      port: 80
+      targetPort: 80
 
     
