@@ -28,7 +28,9 @@ pipeline {
             steps {
                 bat "kubectl get ns ${namespace} || kubectl create ns ${namespace}"   
                 bat "kubectl --namespace=${namespace} delete deploy ${deploy} || (exit 0)" 
-                bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/DB/profile-manage-db-depl.yml"   
+                bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/DB/profile-manage-db-secrets.yml"   
+                bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/DB/profile-manage-db-volumes.yml"   
+                bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/DB/profile-manage-db-depl.yml"     
                 bat "kubectl --namespace=${namespace} apply -f ${k8s_path}/Service/profile-manage-srv-depl.yml"   
             }
         }
