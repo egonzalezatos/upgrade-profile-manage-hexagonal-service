@@ -14,7 +14,11 @@ pipeline {
                 echo 'Hello world!' 
             }
         }
-
+        stage('Build') {
+            steps {
+                bat 'docker build -t ${image} . -f ./devops/Docker/Dockerfile'
+            }
+        }
     }
 }
 
