@@ -24,6 +24,14 @@ pipeline {
                 bat "docker push ${image}"
             }
         }
+        stage('Deployment') {
+            steps {
+                bat "kubectl get ns ${namespace} || kubectl create ns ${namespace}"   
+                bat "kubectl --namespace=${namespace} delete deploy ${deploy}" 
+                bat "kubectl --namespace=${namespace} apply -f kubectl apply -f ${k8s_path}/profile-manage-db-depl.yml"   
+                bat "kubectl --namespace=${namespace} apply -f kubectl apply -f ${k8s_path}/profile-manage-srv-depl.yml"   
+            }
+        }
     }
 }
 
