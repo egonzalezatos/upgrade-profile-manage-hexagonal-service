@@ -4,6 +4,7 @@ WORKDIR /app
 COPY ./out .
 
 #Config ENVS
+ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DB_SERVER=localhost 
 ENV DB_USERNAME=sa
 ENV DB_PASSWORD=Admin123 

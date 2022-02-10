@@ -22,6 +22,8 @@ spec:
             - containerPort: 80
             - containerPort: 666
           env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
