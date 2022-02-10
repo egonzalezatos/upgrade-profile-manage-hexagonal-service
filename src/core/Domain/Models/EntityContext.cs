@@ -54,10 +54,10 @@ namespace Domain.Models
         private void Seed(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Status>().HasData(
-                new {Id = 1, Description = "Active"},
-                new {Id = 2, Description = "Disabled"},
-                new {Id = 3, Description = "Pending"},
-                new {Id = 4, Description = "Warning"}
+                new {Id = 1, Name = "Active"},
+                new {Id = 2, Name = "Disabled"},
+                new {Id = 3, Name = "Pending"},
+                new {Id = 4, Name = "Warning"}
                 );
         }
     }

@@ -33,7 +33,7 @@ spec:
                   key: password
                   name: profile-manage-db-secret
             - name: DB_SERVER
-              value: profile-manage-srv-ip
+              value: profile-manage-db-ip
             - name: GRPC_PORT
               value: "666"
 

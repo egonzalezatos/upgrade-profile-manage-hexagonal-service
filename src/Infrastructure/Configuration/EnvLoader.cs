@@ -23,7 +23,7 @@ namespace Infrastructure.Configuration
                                 .Append($"Server={_configuration["DB_SERVER"]},{_configuration["DB_PORT"]};")
                                 .Append($"User Id={_configuration["DB_USERNAME"]};")
                                 .Append($"Password={_configuration["DB_PASSWORD"]};")
-                                .Append($"Database={_configuration["DB_Database"]};")
+                                .Append($"Database={_configuration["DB_DATABASE"]};")
                                 .ToString();
                 Console.Out.WriteLine(connectionString);
                 return connectionString;
