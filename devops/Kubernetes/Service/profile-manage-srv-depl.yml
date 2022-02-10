@@ -36,6 +36,8 @@ spec:
                   name: profile-manage-db-secret
             - name: DB_SERVER
               value: profile-manage-db-ip
+            - name: DB_PORT
+              value: "1433"
             - name: GRPC_PORT
               value: "666"
 
