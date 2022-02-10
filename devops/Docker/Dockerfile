@@ -4,7 +4,7 @@ WORKDIR /app
 COPY ./out .
 
 #Config ENVS
-ENV DB_SERVER=profile-manage-db-ip 
+ENV DB_SERVER=localhost 
 ENV DB_USERNAME=sa
 ENV DB_PASSWORD=Admin123 
 ENV DB_PORT=1433 

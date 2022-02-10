@@ -1,12 +1,11 @@
-using System.Text;
 using Api.Extensions;
 using Application.Extensions;
 using Domain.Extensions;
 using Domain.Models;
 using gRPC.Extensions;
+using Infrastructure.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,12 +27,12 @@ namespace Infrastructure
         public void ConfigureServices(IServiceCollection services)
         {
             //Enable Core (App/Domain)
-            string connectionString = new StringBuilder()
-                .Append($"Server={Configuration["DB_SERVER"]},{Configuration["DB_PORT"]};")
-                .Append($"User Id={Configuration["DB_USERNAME"]};")
-                .Append($"Password={Configuration["DB_PASSWORD"]};")
-                .Append($"Database={Configuration["DB_Database"]};")
-                .ToString();
+            string connectionString;
+            using (var envLoader = new EnvLoader(Configuration))
+            {
+                connectionString = envLoader.GetDbConnection();
+                Configuration["Kestrel:Endpoints:Grpc:Url"] = envLoader.GetGrpcServer();
+            }
             services.AddDomain(
                 connectionString, 
                 typeof(Program).Assembly.GetName().Name); //Assembly: Infrastructure
@@ -44,7 +43,6 @@ namespace Infrastructure
             services.AddApi();
             
             //Enable GRPC
-            Configuration["Kestrel:Endpoints:Grpc:Url"] = $"http://+:{Configuration["GRPC_PORT"]}";
             services.AddgRPC();
             
             services.AddSwaggerGen(c =>

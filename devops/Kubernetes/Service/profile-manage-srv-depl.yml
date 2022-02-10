@@ -20,6 +20,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+            - containerPort: 666
           env:
             - name: DB_USERNAME
               valueFrom:
@@ -48,8 +49,8 @@ spec:
     app: profile-manage-srv
   ports:
     - name: profile-manage-srv
-      port: 80
-      targetPort: 6001
+      port: 6001
+      targetPort: 80
       protocol: TCP
       
 --- 
@@ -64,7 +65,7 @@ spec:
     app: profile-manage-srv
   ports:
     - name: profile-manage-srv
-      port: 80
-      targetPort: 6001
+      port: 6001
+      targetPort: 80
 
     
