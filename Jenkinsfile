@@ -1,7 +1,7 @@
 def namespace=      "profile-manage"
 def appName=        "profile-manage-service"
 def deploy=         "profile-manage-srv-depl"
-def image=          "egonzalezatos/profile-manage:v2"
+def image=          "egonzalezatos/profile-manage"
 def environment=    "prod"
 def k8s_path=       "./devops/Kubernetes"
 
@@ -16,6 +16,9 @@ pipeline {
         }
         stage('Build') {
             steps {
+                bat "dotnet restore"
+                bat "dotnet clean"
+                bat "dotnet publish -c Release -o out"
                 bat "docker build -t ${image} . -f ./devops/Docker/Dockerfile"
             }
         }

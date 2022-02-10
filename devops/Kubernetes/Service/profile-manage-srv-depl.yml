@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: profile-manage-container
-          image: egonzalezatos/profile-manage:v2
+          image: egonzalezatos/profile-manage
           imagePullPolicy: Always
           ports:
             - containerPort: 80
